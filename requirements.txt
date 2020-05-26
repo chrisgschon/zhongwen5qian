@@ -1,0 +1,11 @@
+pandas
+numpy
+flask
+py2neo
+requests
+psycopg2
+sqlalchemy
+tqdm
+bs4
+jupyter
+matplotlib
