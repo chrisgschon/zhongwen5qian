@@ -9,7 +9,7 @@ node {
 relationship {
   color: #A5ABB6;
   shaft-width: 1px;
-  font-size: 16px;
+  font-size: 10px;
   padding: 3px;
   text-color-external: #000000;
   text-color-internal: #FFFFFF;
@@ -22,14 +22,14 @@ node.* {
   defaultCaption: "<id>";
 }
 node.Character {
-  color: #57C7E3;
-  border-color: #23b3d7;
+  color: #C990C0;
+  border-color: #A5ABB6;
   text-color-internal: #FFFFFF;
   defaultCaption: "<id>";
   caption: "{strokes}";
-  diameter: 80px;
+  diameter: 40px;
 }
 relationship.WORD {
-  caption: "{pinyin}";
-  shaft-width: 13px;
+  caption: "{descr}";
+  shaft-width: 4px;
 }

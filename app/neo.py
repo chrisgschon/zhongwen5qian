@@ -32,6 +32,6 @@ class NeoGraph:
     def create_links(self, df):
         print("----- Linking two character words -----")
         for _, x in tqdm(df.iterrows(), total=df.shape[0]):
-            words = f"MATCH (s1:Character {{strokes:\'{x['c1']}\'}}),(s2:Character {{strokes:\'{x['c2']}\'}}) CREATE (s1)-[:WORD {{ characters: \'{x['characters']}\' , pinyin: \'{x['pinyin']}\', english: \'{x['english']}\' }}]->(s2)"
+            words = f"MATCH (s1:Character {{strokes:\'{x['c1']}\'}}),(s2:Character {{strokes:\'{x['c2']}\'}}) CREATE (s1)-[:WORD {{ characters: \'{x['characters']}\' , pinyin: \'{x['pinyin']}\', english: \'{x['english']}\' , descr: \'{x['descr']}\' }}]->(s2)"
             self.g.run(words)
         print("----- Done -----")

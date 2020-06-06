@@ -1,0 +1,4 @@
+- add single character meanings
+- add >2 char word paths
+- vis config
+- description edge property
