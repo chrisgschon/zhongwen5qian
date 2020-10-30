@@ -37,4 +37,4 @@ services:
         depends_on:
             - neodb
             - pgdb
-        command: jupyter notebook --ip 0.0.0.0 --no-browser --allow-root --port 8890
+        command: jupyter lab --ip=0.0.0.0 --port 8890 --allow-root --no-browser

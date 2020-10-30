@@ -19,6 +19,10 @@ class NeoGraph:
         tx.commit()
         return result
 
+    def run_query(self, query):
+        res = self.g.run(query)
+        return res.data()
+
     def add_characters(self, character_list, df):
         print("----- Adding chars -----")
         tx = self.g.begin()
@@ -45,3 +49,4 @@ class NeoGraph:
             words = f"MATCH (s1:Character {{strokes:\'{x['c1']}\'}}),(s2:Character {{strokes:\'{x['c2']}\'}}) CREATE (s1)-[:WORD {{ characters: \'{x['characters']}\' , pinyin: \'{x['pinyin']}\', english: \'{x['english']}\' , descr: \'{x['descr']}\' }}]->(s2)"
             self.g.run(words)
         print("----- Done -----")
+
