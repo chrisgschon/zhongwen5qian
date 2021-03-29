@@ -50,17 +50,14 @@
             console.log(JSON.stringify(viz));
 			console.log(viz);
 			viz.render();
-
-
 		}
     </script>
 </head>
 <body onload="draw()">
 <div id="viz"></div>
 
-
-Cypher query: <textarea rows="4" cols=50 id="cypher"></textarea><br>
-<input type="submit" value="Submit" id="reload">
+Character search: <textarea rows="4" cols=50 id="charsearch"></textarea><br>
+<input type="submit" value="Submit" id="charload">
 <input type="submit" value="Stabilize" id="stabilize">
 <br>
 <br>
@@ -75,7 +72,7 @@ Cypher query: <textarea rows="4" cols=50 id="cypher"></textarea><br>
 	$("#reload").click(function() {
 
 		var cypher = $("#cypher").val();
-
+		console.log(cypher)
 		if (cypher.length > 3) {
 			viz.renderWithCypher(cypher);
 		} else {
@@ -85,6 +82,22 @@ Cypher query: <textarea rows="4" cols=50 id="cypher"></textarea><br>
 		}
 
 	});
+
+	$("#charload").click(function() {
+
+	var char = $("#charsearch").val();
+	var cypher = `Match path=(c1:Character)-[:WORD]->(c2:Character) where c1.strokes='${char}' or c2.strokes='${char}' RETURN path`
+	console.log(cypher)
+	if (cypher.length > 3) {
+		viz.renderWithCypher(cypher);
+	} else {
+		console.log("reload");
+		viz.reload();
+
+	}
+
+	});
+
 
 	$("#stabilize").click(function() {
 		viz.stabilize();
