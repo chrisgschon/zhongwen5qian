@@ -1,2 +1,2 @@
-- add >2 char word paths
-- web example
+- iterate on js example
+
