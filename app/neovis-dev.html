@@ -86,7 +86,7 @@ Cypher query: <textarea rows="4" cols=50 id="cypher"></textarea><br>
 	$("#charload").click(function() {
 
 	var char = $("#charsearch").val();
-	var cypher = `Match path=(c1:Character)-[:WORD]->(c2:Character) where c1.strokes='${char}' or c2.strokes='${char}' RETURN path`
+	var cypher = `Match path=(c1:Character)-[:WORD*0..1]->(c2:Character) where c1.strokes='${char}' or c2.strokes='${char}' RETURN path`
 	console.log(cypher)
 	if (cypher.length > 3) {
 		viz.renderWithCypher(cypher);
