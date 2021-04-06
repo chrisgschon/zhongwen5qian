@@ -27,9 +27,11 @@ class NeoGraph:
         print("----- Adding chars -----")
         tx = self.g.begin()
         for x in tqdm(character_list, total = len(character_list)):
-            descr = df[df['characters'] == x]['descr']
-            descr_text = descr.values[0] if len(descr.values) == 1 else None
-            n = Node("Character", strokes = x, descr = descr_text)
+            py = df[df['characters'] == x]['pinyin']
+            py_text = py.values[0] if len(py.values) == 1 else None
+            english = df[df['characters'] == x]['english']
+            english_text = english.values[0] if len(english.values) == 1 else None
+            n = Node("Character", strokes = x, pinyin = py_text, english = english_text)
             tx.create(n)
         tx.commit()
         self.g.run("CREATE INDEX ON :Character(strokes)")
@@ -38,7 +40,7 @@ class NeoGraph:
     def add_character_labels(self, df, character_list):
         print("----- Adding single character labels -----")
         for _, x in tqdm(character_list, total = len(character_list)):
-            words = f"MATCH (s1:Character {{strokes:\'{x['c1']}\'}}),(s2:Character {{strokes:\'{x['c2']}\'}}) CREATE (s1)-[:WORD {{ characters: \'{x['characters']}\' , pinyin: \'{x['pinyin']}\', english: \'{x['english']}\' , descr: \'{x['descr']}\' }}]->(s2)"
+            words = f"MATCH (s1:Character {{strokes:\'{x['c1']}\'}}),(s2:Character {{strokes:\'{x['c2']}\'}}) CREATE (s1)-[:WORD {{ characters: \'{x['characters']}\' , pinyin: \'{x['pinyin']}\', english: \'{x['english']}\' }}]->(s2)"
             self.g.run(words)
         print("----- Done -----")
         
@@ -46,7 +48,8 @@ class NeoGraph:
     def create_links(self, df):
         print("----- Linking two character words -----")
         for _, x in tqdm(df.iterrows(), total=df.shape[0]):
-            words = f"MATCH (s1:Character {{strokes:\'{x['c1']}\'}}),(s2:Character {{strokes:\'{x['c2']}\'}}) CREATE (s1)-[:WORD {{ characters: \'{x['characters']}\' , pinyin: \'{x['pinyin']}\', english: \'{x['english']}\' , descr: \'{x['descr']}\' }}]->(s2)"
+            english = x['english'].replace('"','\\"')
+            words = f"""MATCH (s1:Character {{strokes:\"{x['c1']}\"}}),(s2:Character {{strokes:\"{x['c2']}\"}}) CREATE (s1)-[:WORD {{ characters: \"{x['characters']}\" , pinyin: \"{x['pinyin']}\", english: \"{english}\" }}]->(s2)"""
             self.g.run(words)
         print("----- Done -----")
 

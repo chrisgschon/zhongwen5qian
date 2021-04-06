@@ -1,16 +1,16 @@
 <!doctype html>
 <html>
 <head>
-    <title>Neovis.js Simple Example</title>
+    <title>中文五千-Chinese5000</title>
     <style type="text/css">
         html, body {
-            font: 16pt arial;
+            font: 12pt arial;
         }
 
         #viz {
-            width: 900px;
-            height: 700px;
-            border: 1px solid lightgray;
+            width: 2000px;
+            height: 800px;
+            border: 0px solid lightgray;
             font: 22pt arial;
         }
 
@@ -33,14 +33,18 @@
 				server_url: "bolt://localhost:7687",
 				server_user: "neo4j",
 				server_password: "pass123456",
+				arrows: true,
+				hierarchical_sort_method: "directed",
 				labels: {
 					"Character": {
-						"caption": "strokes"
+						"caption": "strokes",
+						"title_properties":["pinyin", "english"]
 					}
 				},
 				relationships: {
 					"WORD": {
-						"caption": false
+						"thickness": 0.5,
+						"caption": false	
 					}
 				},
 				initial_cypher: "Match p=(:Character)-[:WORD]->(c:Character)-[:WORD]->(:Character) where c.strokes='上' RETURN p"
@@ -56,16 +60,31 @@
 <body onload="draw()">
 <div id="viz"></div>
 
-Character search: <textarea rows="4" cols=50 id="charsearch"></textarea><br>
-<input type="submit" value="Submit" id="charload">
-<input type="submit" value="Stabilize" id="stabilize">
-<br>
-<br>
+<center>
+	Search Character: 
+	<textarea rows="2" cols=5 id="charsearch">
 
+	</textarea>
+	<input type="submit" value="Submit" id="charload">
+	<br>
+	<br>
+</center>
+
+<center>
+	Search English: 
+	<textarea rows="4" cols=20 id="englishsearch">
+
+	</textarea>
+	<input type="submit" value="Submit" id="englishload">
+	<br>
+	<br>
+</center>
+
+<center>
 Cypher query: <textarea rows="4" cols=50 id="cypher"></textarea><br>
 <input type="submit" value="Submit" id="reload">
 <input type="submit" value="Stabilize" id="stabilize">
-
+</center>
 </body>
 
 <script>
@@ -85,8 +104,23 @@ Cypher query: <textarea rows="4" cols=50 id="cypher"></textarea><br>
 
 	$("#charload").click(function() {
 
-	var char = $("#charsearch").val();
+	var char = $("#charsearch").val().trim();
 	var cypher = `Match path=(c1:Character)-[:WORD*0..1]->(c2:Character) where c1.strokes='${char}' or c2.strokes='${char}' RETURN path`
+	console.log(cypher)
+	if (cypher.length > 3) {
+		viz.renderWithCypher(cypher);
+	} else {
+		console.log("reload");
+		viz.reload();
+
+	}
+
+	});
+
+	$("#englishload").click(function() {
+
+	var char = $("#englishsearch").val().trim();
+	var cypher = `Match p=(:Character)-[w:WORD]->(:Character) where w.english =~ '.* ${char} .*' or w.english =~ '.* ${char};.*' or w.english =~ '.*${char};.*' or w.english =~ '.*${char}' RETURN p`
 	console.log(cypher)
 	if (cypher.length > 3) {
 		viz.renderWithCypher(cypher);

@@ -1,10 +1,10 @@
 from neo import NeoGraph
 from db import Db
-
+from dragonmapper import hanzi
 import pandas as pd
+import sys
 
 g = NeoGraph()
-
 db = Db()
 eng = db.create_engine()
 df = pd.read_sql("""select * from words""", eng)
@@ -15,8 +15,10 @@ df['c2'] = df['characters'].apply(lambda x: list(x)[1] if len(x) >= 2 else None)
 df['p1'] = df['pinyin'].apply(lambda x: x.split(' ')[0])
 df['p2'] = df['pinyin'].apply(lambda x: x.split(' ')[1] if ' ' in x else None)
 df['english'] = df['english'].apply(lambda x: x.replace("'", "\\'"))
-df['english_short'] = df['english'].apply(lambda x: x.split(';')[0])
-df['descr'] = df.apply(lambda x: f"""{x['pinyin']} | {x['english_short']}""",axis = 1)
+# df['english_short'] = df['english'].apply(lambda x: x.split(';')[0])
+# df['descr'] = df.apply(lambda x: f"""{x['pinyin']} | {x['english_short']}""",axis = 1)
+df['pinyin_num'] = df['pinyin'].copy()
+df['pinyin'] = df['characters'].apply(lambda x: hanzi.to_pinyin(x))
 
 helper = []
 chars = []
@@ -26,7 +28,6 @@ for i, c in df.iterrows():
         chars.append(h)
 
 truncate = True
-
 if truncate:
     g.truncate()
 
