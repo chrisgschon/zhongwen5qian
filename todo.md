@@ -1,2 +1,6 @@
-- add >2 char word paths
-- web example
+- search boxes
+- styling
+- wrapper html/css 
+- deploy on pi
+- deploy to web
+
