@@ -14,7 +14,7 @@ chardet==4.0.0
 cjklib==0.2
 click==7.1.2
 contextvars==2.4
-cryptography==2.1.4
+cryptography==3.3.2
 cycler==0.10.0
 dataclasses==0.8
 decorator==4.4.2
