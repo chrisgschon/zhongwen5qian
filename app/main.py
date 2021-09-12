@@ -20,6 +20,8 @@ df['english'] = df['english'].apply(lambda x: x.replace("'", "\\'"))
 df['pinyin_num'] = df['pinyin'].copy()
 df['pinyin'] = df['characters'].apply(lambda x: hanzi.to_pinyin(x))
 
+df.to_csv('5ktrans.csv', index=False)
+
 helper = []
 chars = []
 for i, c in df.iterrows():
